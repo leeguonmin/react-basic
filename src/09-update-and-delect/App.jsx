@@ -24,20 +24,6 @@ function App() {
 
   if (mode === "WELCOME") {
     content = <Article title="Welcome" body="Hello, Web"></Article>;
-    // conrextContol 은 READ 모드 일때만 노출
-    contextControl = (
-      <li>
-        <a
-          href={"/Update" + id}
-          onClick={(event) => {
-            event.preventDefault(); // 기본 동작 막기
-            setMode("UPDATE"); // mode를 UPDATE 로 변경
-          }}
-        >
-          update
-        </a>
-      </li>
-    );
   } else if (mode === "READ") {
     let title,
       body = null;
@@ -49,6 +35,37 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>;
+    // conrextContol 은 READ 모드 일때만 노출
+    // <> </> : fragment -> 노드들을 단일 루트 로드로 묶기 위한 용도
+    contextControl = (
+      <>
+        <li>
+          <a
+            href={"/Update" + id}
+            onClick={(event) => {
+              event.preventDefault(); // 기본 동작 막기
+              setMode("UPDATE"); // mode를 UPDATE 로 변경
+            }}
+          >
+            update
+          </a>
+        </li>
+        <li>
+          <input
+            type="button"
+            value="delete"
+            onClick={() => {
+              //   alert("Delete");
+
+              // 현재 선택된 topic id 를 가진 요소를 삭제
+              const newTopics = topics.filter((topic) => topic.id !== id);
+              setTopics(newTopics);
+              setMode("WELCOME");
+            }}
+          />
+        </li>
+      </>
+    );
   } else if (mode === "CREATE") {
     content = (
       <Create
@@ -79,6 +96,17 @@ function App() {
         body={body}
         onUpdate={(title, body) => {
           console.log(title, body);
+          // topics update
+          const newTopics = [...topics]; // 새 배열 생성
+          const updatedTopic = { id: id, title: title, body: body };
+          for (let i = 0; i < newTopics.length; i++) {
+            if (newTopics[i].id === id) {
+              newTopics[i] = updatedTopic;
+              break;
+            }
+          }
+          setTopics(newTopics);
+          setMode("READ");
         }}
       ></Update>
     );

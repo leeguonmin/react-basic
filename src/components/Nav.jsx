@@ -1,4 +1,10 @@
-function Nav(props) {
+// function Nav(props) {
+import PropTypes from "prop-types";
+
+function Nav({ topics, onChangeMode }) {
+  // title, onChangeMode
+
+  /*
   const lis = [];
   for (let i = 0; i < props.topics.length; i++) {
     let t = props.topics[i];
@@ -17,11 +23,33 @@ function Nav(props) {
       </li>
     );
   }
+    */
+
   return (
     <nav>
-      <ol>{lis}</ol>
+      {/* <ol>{lis}</ol> */}
+      <ol>
+        {topics.map((topic) => (
+          <li key={topic.id}>
+            <a
+              id={topic.id}
+              href={"/read/" + topic.id}
+              onClick={(event) => {
+                event.preventDefault();
+                onChangeMode(Number(event.target.id));
+              }}
+            >
+              {topic.title}
+            </a>
+          </li>
+        ))}
+      </ol>
     </nav>
   );
 }
+Nav.propTypes = {
+  topics: PropTypes.array,
+  onChangeMode: PropTypes.func,
+};
 
 export default Nav;

@@ -1,6 +1,11 @@
+import PropTypes from "prop-types";
+
 import { useState } from "react";
 
+// function Update(props) {
 function Update(props) {
+  // 여기서 props 그냥 쓰는 이유 : 밑에 title이 충돌나니까
+
   // title하고 body, 그리고 onUpdate 받아온거
 
   // const title = props.title;
@@ -44,5 +49,10 @@ function Update(props) {
     </article>
   );
 }
+Update.propTypes = {
+  title: PropTypes.string,
+  body: PropTypes.string,
+  onUpdate: PropTypes.func,
+};
 
 export default Update;
